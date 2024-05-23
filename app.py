@@ -54,13 +54,13 @@ def get_question1(name):
                                                                 ])),
                                           dbc.Col(dbc.Container([
                                               html.H4("1차굽기"),
-                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)]),
-                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)]),
-                                              dcc.RadioItems(options=df['1차굽기시간'].unique(), inline=True),
+                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)], id='s11t'),
+                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)], id='s11b'),
+                                              dcc.RadioItems(options=df['1차굽기시간'].unique(), inline=True, id='s11time'),
                                               html.H4("2차굽기"),
-                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)]),
-                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)]),
-                                              dcc.RadioItems(options=df['2차굽기시간'].unique(), inline=True),
+                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)], id='s12t'),
+                                              dcc.Dropdown(options=[i for i in range(150, 210, 10)], id='s12b'),
+                                              dcc.RadioItems(options=df['2차굽기시간'].unique(), inline=True, id='s12time'),
                                               html.Button("Submit", n_clicks=0, id='submit1')
                                               
                                                                 ])),        
@@ -181,15 +181,20 @@ def get_state3(value1):
           State('s11', 'value'),
           State('s12', 'value'),
           State('s13', 'value'),
+          State('s11t', 'value'),State('s11b', 'value'), State('s11time', 'value'), 
+          State('s12t', 'value'),  State('s12b', 'value'),  State('s12time', 'value'),
          prevent_initial_call=False, suppress_callback_exceptions=True)
-def get_test1(clicks, name, s11, s12, s13):
+def get_test1(clicks, name, s11, s12, s13, s11t, s11b, s11time, s12t, s12b, s12time):
     if clicks:
         values = df[df['과제명'] == name].reset_index(drop=True)
-        if s11[0] == values['1S'][0] and s11[-1] == values['1E'][0] and s12[0] == values['중S'][0]:
+        if (s11[0] == values['1S'][0] and s11[-1] == values['1E'][0] and s12[0] == values['중S'][0] and s12[-1] == values['중E'][0] 
+           # and s13[0] == values['2S'][0] and s13[-1] == values['2E'][0]
+           and s11t == values['1TOP'][0] and s11b == values['1BUTTOM'][0] and s11time == values['1차굽기시간'][0]
+           and s12t == values['2TOP'][0] and s12b == values['2BOTTOM'][0] and s12time == values['2차굽기시간'][0]):
             return bread_a
         else: return bread_b
     else: return bread_b
-
+                                                             
 @callback(Output('baguette_image', 'children'),
           Input('submit2', 'n_clicks'),
          prevent_initial_call=False, suppress_callback_exceptions=True)
@@ -205,7 +210,6 @@ def get_test3(clicks):
     if clicks:
         return mini_a
     else: return mini_b
-
-
+            
 if __name__ == '__main__':
     app.run_server(debug=True)
