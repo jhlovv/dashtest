@@ -35,4 +35,4 @@ app.layout = html.Div([
                   dbc.Col(html.Div(mini_b)),
                   dbc.Col(html.Div(bread_b))])  
 ])
-app.run_server(debug=True, port=8050)
+app.run_server(debug=True, use_reloader=False)
