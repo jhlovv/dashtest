@@ -5,6 +5,7 @@ import dash_bootstrap_components as dbc
 # https://icon-sets.iconify.design/?query=bread
 
 app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 baguette_b = DashIconify(
         icon="mdi:bread",
@@ -35,4 +36,6 @@ app.layout = html.Div([
                   dbc.Col(html.Div(mini_b)),
                   dbc.Col(html.Div(bread_b))])  
 ])
-app.run_server(debug=True, use_reloader=False)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
